@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Suspense} from 'react';
+import './App.scss';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const Welcome = React.lazy(() => import('./components/Welcome'));
+const Game = React.lazy(() => import('./components/Game'));
+
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = {
+            inGame: false,
+            pseudo: ""
+        }
+    }
+
+    handleSubmit(pseudo) {
+        this.setState({
+            pseudo: pseudo,
+            inGame: true
+        })
+    }
+
+    render() {
+        if (this.state.inGame) {
+            return (
+                <Suspense fallback={<div>Chargement...</div>}>
+                    <Game pseudo={this.state.pseudo} />
+                </Suspense>
+            )
+        } else {
+            return (
+                <Suspense fallback={<div>Chargement...</div>}>
+                    <Welcome handleSubmit={this.handleSubmit}/>
+                </Suspense>
+            )
+        }
+    }
 }
 
 export default App;
