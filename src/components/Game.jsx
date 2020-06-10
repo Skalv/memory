@@ -41,9 +41,19 @@ class Game extends React.Component {
                 total: 120,
                 style: { width: 0 }
             }
-        }
+        };
     }
 
+    /**
+     * handleClick est appelé à chaque fois que l'on clique sur une carte.
+     * Dans un premier temps il affiche le fruit sur lequel on a cliqué, grâce au booléen "found".
+     * Dans un second temps on analyse la carte.
+     *
+     * Lors du premier clique, on sauvegarde le fruit que se trouve sur la carte.
+     * Lors du second clique, on compare les deux fruits :
+     * - C'est les mêmes on les laisses donc visible et on test la condition de victoire.
+     * - Ce n'est pas les mêmes, on attends 1,5 secondes (1500ms) et on les cachent.
+     */
     async handleClick(clickedItem) {
         if (
             this.state.pending // On ne peu pas recliquer avant que les deux secondes soient passées.
@@ -52,25 +62,34 @@ class Game extends React.Component {
         ) {
             return;
         }
-        let firstClick = this.state.firstClick;
+
+        let firstClick = this.state.firstClick; // On récup la première carte retournée.
         let items = this.state.items.map((currentItem) => {
+            // On itère sur chaque carte, afin de rendre visible c'elle qui est cliquée.
             if (currentItem.key === clickedItem.key) {
                 currentItem.found = true
             }
             return currentItem;
         });
-
+        // On sauvegarde notre état (permet de rendre visible nos cartes cliquées)
         this.setState({
             items: items,
             pending: true
         });
-
+        // Si firstClick n'est pas null, c'est que l'on vien de cliquer sur la seconde carte.
         if (firstClick) {
+            // Si les deux cartes retournées sont identiques.
             if (firstClick.id === clickedItem.id && firstClick.key !== clickedItem.key) {
+                // On test si il y a encore des cartes non trouvées dans notre tableau.
                 if (!_.find(this.state.items, ['found', false])) {
+                    // Si plus de carte, la partie est gagnée.
                     this.isWin();
+
+                    // Ici il ne se passe rien d'autre, les deux cartes sont déjà retournées, on les laissent donc
+                    // dans cet état.
                 }
-            } else {
+            } else { // Les deux cartes ne sont pas identiques
+                // On attend 1,5 secondes avant de retourner les deux cartes.
                 await new Promise(r => setTimeout(r, 1500));
                 items = this.state.items.map((currentItem) => {
                     if (currentItem.key === firstClick.key || currentItem.key === clickedItem.key) {
@@ -79,11 +98,12 @@ class Game extends React.Component {
                     return currentItem;
                 });
             }
-            firstClick = null;
-        } else {
+            firstClick = null; // On reset la première carte.
+        } else { // Première carte => on la sauvegarde.
             firstClick = clickedItem;
         }
 
+        // On sauvegarde notre état ce qui provoque un rechargement de notre grille.
         this.setState({
             firstClick: firstClick,
             items: items,
@@ -92,6 +112,10 @@ class Game extends React.Component {
     };
 
     componentDidMount() {
+        this.startTimer();
+    }
+
+    startTimer() {
         this.timerID = setInterval(
             () => this.tick(),
             1000
@@ -142,7 +166,8 @@ class Game extends React.Component {
                 current: 0,
                 style: { width: 0 }
             }
-        })
+        });
+        this.startTimer();
     }
 
     render() {
