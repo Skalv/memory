@@ -1,5 +1,12 @@
 import React from "react";
 
+/**
+ * Affiche la barre de progression
+ *
+ * @param props
+ * @returns {*}
+ * @constructor
+ */
 function ProgressBar(props) {
     return (
         <div>

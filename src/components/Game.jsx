@@ -2,31 +2,46 @@ import React, {Suspense} from "react";
 import axios from "axios";
 const _ = require('lodash');
 
+/*
+React.Lazy() et Suspense permettent de rendre dynamiquement nos composants (que si on en a besoin)
+https://reactjs.org/docs/code-splitting.html#reactlazy
+ */
 const MessageBanner = React.lazy(() => import('./MessageBanner'));
 const ProgressBar = React.lazy(() => import('./ProgressBar'));
 const Square = React.lazy(() => import('./Square'));
 
+/*
+Au début d'une partie on appel la fonction initItems
+qui permet de générer la liste des fruits à trouver
+ */
 function initItems () {
-    // On prend 14 des 18 items
+    // On prend, au hasard, 14 des 18 fruits
     let selectedItems = [];
-    while (selectedItems.length < 14) {
-        let id = (Math.floor(Math.random() * (18 - 1) + 1)) * 100;
-        if (selectedItems.indexOf(id) === -1) {
-            selectedItems.push(id);
+    while (selectedItems.length < 14) { // "Tant que" nous n'avons pas 14 fruits on itère
+        let id = (Math.floor(Math.random() * (18 - 1) + 1)) * 100; // Random entre 1 et 18
+        if (selectedItems.indexOf(id) === -1) { // Si ce fruit n'est pas déjà dans la liste
+            selectedItems.push(id); // On le prend
         }
     }
+    // On double notre liste (pour avoir des pairs)
     let items = selectedItems.concat(selectedItems);
-
+    // On mélange nos fruits et on créé des "objets"
     return _.shuffle(items.map((id, index) => {
         return {
-            key: `${id}-${index}`,
-            id: id,
-            style: { backgroundPositionY: -id },
-            found: false
+            key: `${id}-${index}`, // Clé unique par items
+            id: id, // Clé unique par pair de fruits
+            style: { backgroundPositionY: -id }, // utilisation d'un sprite CSS pour afficher le fruit.
+            found: false // Si found => visible sinon => hidden
         };
     }));
 }
 
+/**
+ * Composant de jeu
+ * Il affiche la grille avec les fruits.
+ * Gère les méchanismes du jeu.
+ * Gère le timer.
+ */
 class Game extends React.Component {
     constructor(props) {
         super(props);
@@ -44,15 +59,15 @@ class Game extends React.Component {
         };
     }
 
-    /**
-     * handleClick est appelé à chaque fois que l'on clique sur une carte.
-     * Dans un premier temps il affiche le fruit sur lequel on a cliqué, grâce au booléen "found".
-     * Dans un second temps on analyse la carte.
-     *
-     * Lors du premier clique, on sauvegarde le fruit que se trouve sur la carte.
-     * Lors du second clique, on compare les deux fruits :
-     * - C'est les mêmes on les laisses donc visible et on test la condition de victoire.
-     * - Ce n'est pas les mêmes, on attends 1,5 secondes (1500ms) et on les cachent.
+    /*
+    HandleClick est appelé à chaque fois que l'on clique sur une carte.
+    Dans un premier temps il affiche le fruit sur lequel on a cliqué, grâce au booléen "found".
+    Dans un second temps on analyse la carte.
+
+    Lors du premier clique, on sauvegarde le fruit que se trouve sur la carte.
+    Lors du second clique, on compare les deux fruits :
+        - C'est les mêmes on les laisses donc visible et on test la condition de victoire.
+        - Ce n'est pas les mêmes, on attends 1,5 secondes (1500ms) et on les cachent.
      */
     async handleClick(clickedItem) {
         if (
@@ -112,10 +127,16 @@ class Game extends React.Component {
         });
     };
 
+    /*
+    Quand le composant est monté, on démarre le timer
+     */
     componentDidMount() {
         this.startTimer();
     }
 
+    /*
+    Permet de démarrer un timer qui appel la fonction tick toutes les secondes
+     */
     startTimer() {
         this.timerID = setInterval(
             () => this.tick(),
@@ -123,22 +144,32 @@ class Game extends React.Component {
         );
     }
 
+    /*
+    Fonction de victoire.
+    On affiche le message de victoire.
+    On stop le timer
+    On envois le score au serveur.
+     */
     async isWin() {
         this.setState({
             isWin: true
         });
         clearInterval(this.timerID);
-        let {data} = await axios.post('/api/games', {
+        await axios.post('/api/games', {
             pseudo: this.props.pseudo,
             score: this.state.progress.current
         });
-
     }
 
+    /*
+    Cette fonction permet d'avoir un temps maximum pour essayé de gagner (120 seconde)
+    Elle met à jours la barre de progression et fait afficher le message "perdu" quand le temps
+    est écoulé.
+     */
     tick() {
         let newTime = this.state.progress.current;
-        newTime++;
-        const percent = Math.floor((newTime / this.state.progress.total) * 100);
+        newTime++; // seconde++
+        const percent = Math.floor((newTime / this.state.progress.total) * 100); // avancement de la barre de progression en %
         this.setState({
             progress: {
                 ...this.state.progress,
@@ -146,7 +177,7 @@ class Game extends React.Component {
                 style: { width: `${percent}%` }
             }
         });
-
+        // Si le temps est écoulé, on affiche perdu !
         if (newTime === this.state.progress.total) {
             clearInterval(this.timerID);
             this.setState({
@@ -155,6 +186,10 @@ class Game extends React.Component {
         }
     }
 
+    /*
+    Permet de rejouer en repassant tous les paramètre du jeu à 0 et en rénitialisant la grille.
+    Redémarre aussi le timer
+     */
     reset() {
         this.setState({
             items: initItems(),
@@ -171,7 +206,12 @@ class Game extends React.Component {
         this.startTimer();
     }
 
+    /*
+    Affiche la grille du jeu.
+     */
     render() {
+        // On génére un tableau avec chaque élément contenant un fruit
+        // Le click sur un élément appel la fonction handleClick
         const squares = this.state.items.map((item) => {
             return (
                 <Square
@@ -190,6 +230,7 @@ class Game extends React.Component {
                     <div className="container">
                         {/*Affichage de la grille de jeu*/}
                         {squares}
+                        {/*Affichage du message de fin de partie, remonte aussi le reset*/}
                         <MessageBanner
                             win={this.state.isWin}
                             timeover={this.state.timeover}
@@ -197,6 +238,7 @@ class Game extends React.Component {
                             onClick={() => {this.reset()}}
                         />
                     </div>
+                    {/*Affichage de la barre de progression*/}
                     <ProgressBar style={this.state.progress.style} />
                 </Suspense>
             </div>
