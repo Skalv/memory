@@ -1,0 +1,14 @@
+version: "3.3"
+
+services:
+  web:
+    image: "node:lts"
+    user: "node"
+    working_dir: /usr/src/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - 8012:8000
+    command: ["node", "server.js"]
