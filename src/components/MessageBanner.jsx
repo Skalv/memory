@@ -20,6 +20,7 @@ function MessageBanner (props) {
                 <h2>{msg}</h2>
                 <p>{score}</p>
                 <button onClick={props.onClick}>Rejouer</button>
+                <button onClick={() => {window.location.reload()}}>Quitter</button>
             </div>
         </div>
     )
