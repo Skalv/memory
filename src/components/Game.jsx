@@ -45,7 +45,11 @@ class Game extends React.Component {
     }
 
     async handleClick(clickedItem) {
-        if (this.state.pending || this.state.timeOver) {
+        if (
+            this.state.pending // On ne peu pas recliquer avant que les deux secondes soient passées.
+            || this.state.timeOver // Désactive quand le temps est écoulé.
+            || (this.state.firstClick && this.state.firstClick.key === clickedItem.key) // Désactive le double click
+        ) {
             return;
         }
         let firstClick = this.state.firstClick;
