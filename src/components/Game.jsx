@@ -130,6 +130,21 @@ class Game extends React.Component {
         }
     }
 
+    reset() {
+        this.setState({
+            items: initItems(),
+            firstClick: null,
+            pending: false,
+            isWin: false,
+            timeover: false,
+            progress: {
+                ...this.state.progress,
+                current: 0,
+                style: { width: 0 }
+            }
+        })
+    }
+
     render() {
         const squares = this.state.items.map((item) => {
             return (
@@ -153,6 +168,7 @@ class Game extends React.Component {
                             win={this.state.isWin}
                             timeover={this.state.timeover}
                             time={this.state.progress.current}
+                            onClick={() => {this.reset()}}
                         />
                     </div>
                     <ProgressBar style={this.state.progress.style} />

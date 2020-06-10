@@ -9,7 +9,7 @@ function MessageBanner (props) {
     let score = null;
     if (props.win) {
         msg = "Gagné !";
-        score = <p>Votre temps : {props.time} secondes</p>
+        score = `Votre temps : ${props.time} secondes`
     } else if (props.timeover) {
         msg = "Perdu !";
     }
@@ -19,6 +19,7 @@ function MessageBanner (props) {
             <div className="message-data">
                 <h2>{msg}</h2>
                 <p>{score}</p>
+                <button onClick={props.onClick}>Rejouer</button>
             </div>
         </div>
     )
