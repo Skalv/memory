@@ -15,9 +15,11 @@ function MessageBanner (props) {
     }
 
     return (
-        <div className="message">
-            <h2>{msg}</h2>
-            <p>{score}</p>
+        <div className="message-box">
+            <div className="message-data">
+                <h2>{msg}</h2>
+                <p>{score}</p>
+            </div>
         </div>
     )
 }

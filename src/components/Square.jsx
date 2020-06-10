@@ -6,9 +6,7 @@ function Square(props) {
             className={(props.fruit.found)? "item visible" : "item hidden"}
             onClick={() => {props.onClick()}}
             style={props.fruit.style}
-        >
-            {props.fruit.id}
-        </div>
+        />
     )
 }
 

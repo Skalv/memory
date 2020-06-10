@@ -33,7 +33,7 @@ body {
 }
 
 #Game {
-  height: 100vh;
+  min-height: 100vh;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -43,7 +43,7 @@ body {
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    width: 770px;
+    width: 330px;
     @include element-bg;
     border-radius: 8px;
     .item {
@@ -61,8 +61,8 @@ body {
       }
     }
   }
-  .message {
-    backdrop-filter: blur(5px);
+  .message-box {
+    backdrop-filter: blur(10px);
     border-radius: 8px;
     color: white;
     display: flex;
@@ -74,11 +74,17 @@ body {
     right: -10px;
     bottom: -10px;
     left: -10px;
+    .message-data {
+      padding: 0 10px;
+      border-radius: 8px;
+      background-color: rgba(0, 0, 0, .5);
+    }
   }
   .progress-bar {
     height: 8px;
     margin-top: 20px;
-    width: 700px;
+    width: 300px;
+    margin-bottom: 50px;
     background-color: #e1e1e1;
     border-radius: 4px;
     overflow: hidden;
@@ -90,7 +96,7 @@ body {
 }
 
 #Welcome {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -98,11 +104,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-
     form {
       display: flex;
       flex-direction: column;
-      width: 400px;
+      width: 330px;
       input {
         @include element-bg;
       }
@@ -133,3 +138,24 @@ body {
   }
 }
 
+@media (min-width: 568px) {
+  #Game {
+    .container {
+      width: 440px;
+    }
+    .progress-bar {
+      width: 400px;
+    }
+  }
+}
+
+@media (min-width: 770px) {
+  #Game {
+    .container {
+      width: 770px;
+    }
+    .progress-bar {
+      width: 700px;
+    }
+  }
+}
