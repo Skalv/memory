@@ -59,6 +59,7 @@ class Game extends React.Component {
             this.state.pending // On ne peu pas recliquer avant que les deux secondes soient passées.
             || this.state.timeOver // Désactive quand le temps est écoulé.
             || (this.state.firstClick && this.state.firstClick.key === clickedItem.key) // Désactive le double click
+            || clickedItem.found // Le fruit est déjà découvert (missclick)
         ) {
             return;
         }
