@@ -3,7 +3,6 @@ version: "3.3"
 services:
   web:
     image: "node:lts"
-    user: "node"
     working_dir: /usr/src/app
     environment:
       - NODE_ENV=production
