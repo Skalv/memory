@@ -11,7 +11,7 @@ const ProgressBar = React.lazy(() => import('./ProgressBar'));
 const Square = React.lazy(() => import('./Square'));
 
 /*
-Au début d'une partie on appel la fonction initItems
+Au début d'une partie on appelle la fonction initItems
 qui permet de générer la liste des fruits à trouver
  */
 function initItems () {
@@ -23,14 +23,14 @@ function initItems () {
             selectedItems.push(id); // On le prend
         }
     }
-    // On double notre liste (pour avoir des pairs)
+    // On double notre liste (pour avoir des paires)
     let items = selectedItems.concat(selectedItems);
     // On mélange nos fruits et on créé des "objets"
     return _.shuffle(items.map((id, index) => {
         return {
             key: `${id}-${index}`, // Clé unique par items
-            id: id, // Clé unique par pair de fruits
-            style: { backgroundPositionY: -id }, // utilisation d'un sprite CSS pour afficher le fruit.
+            id: id, // Clé unique par paire de fruits
+            style: { backgroundPositionY: -id }, // utilisation d'un Sprite CSS pour afficher le fruit.
             found: false // Si found => visible sinon => hidden
         };
     }));
@@ -64,10 +64,10 @@ class Game extends React.Component {
     Dans un premier temps il affiche le fruit sur lequel on a cliqué, grâce au booléen "found".
     Dans un second temps on analyse la carte.
 
-    Lors du premier clique, on sauvegarde le fruit que se trouve sur la carte.
+    Lors du premier clique, on sauvegarde le fruit qui se trouve sur la carte.
     Lors du second clique, on compare les deux fruits :
-        - C'est les mêmes on les laisses donc visible et on test la condition de victoire.
-        - Ce n'est pas les mêmes, on attends 1,5 secondes (1500ms) et on les cachent.
+        - Si ce sont les mêmes on les laisse donc visible et on teste la condition de victoire.
+        - Si ce ne sont pas les mêmes, on attend 1,5 secondes (1500ms) et on les cache.
      */
     async handleClick(clickedItem) {
         if (
@@ -135,7 +135,7 @@ class Game extends React.Component {
     }
 
     /*
-    Permet de démarrer un timer qui appel la fonction tick toutes les secondes
+    Permet de démarrer un timer qui appel la fonction tick() toutes les secondes
      */
     startTimer() {
         this.timerID = setInterval(
@@ -147,8 +147,8 @@ class Game extends React.Component {
     /*
     Fonction de victoire.
     On affiche le message de victoire.
-    On stop le timer
-    On envois le score au serveur.
+    On stoppe le timer
+    On envoie le score au serveur.
      */
     async isWin() {
         this.setState({
@@ -162,8 +162,8 @@ class Game extends React.Component {
     }
 
     /*
-    Cette fonction permet d'avoir un temps maximum pour essayé de gagner (120 seconde)
-    Elle met à jours la barre de progression et fait afficher le message "perdu" quand le temps
+    Cette fonction permet d'avoir un temps maximum pour essayer de gagner (120 seconde)
+    Elle met à jour la barre de progression et fait afficher le message "perdu" quand le temps
     est écoulé.
      */
     tick() {
@@ -187,7 +187,7 @@ class Game extends React.Component {
     }
 
     /*
-    Permet de rejouer en repassant tous les paramètre du jeu à 0 et en rénitialisant la grille.
+    Permet de rejouer en repassant tous les paramètres du jeu à 0 et en rénitialisant la grille.
     Redémarre aussi le timer
      */
     reset() {
@@ -211,7 +211,7 @@ class Game extends React.Component {
      */
     render() {
         // On génére un tableau avec chaque élément contenant un fruit
-        // Le click sur un élément appel la fonction handleClick
+        // Le click sur un élément appelle la fonction handleClick
         const squares = this.state.items.map((item) => {
             return (
                 <Square

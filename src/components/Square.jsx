@@ -2,7 +2,7 @@ import React from "react";
 
 /**
  * Affiche un item.
- * Quand on clique dessus il appel la fonction de retour onClick
+ * Quand on clique dessus il appelle la fonction de retour onClick
  *
  * @param props
  * @returns {*}

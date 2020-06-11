@@ -8,18 +8,18 @@ const path = require('path');
 var db = {};
 
 // Connexion à la BDD
-// Ici sqlite3 est utilisé, c'est une base de donnée fichier
-// c'est à dire que les données sont stockées dans un dossier définit
+// Ici sqlite3 est utilisé, c'est une base de données fichier
+// c'est à dire que les données sont stockées dans un dossier défini
 const sequelize = new Sequelize({
     dialect: "sqlite",
-    storage: path.join(__dirname, '..', 'storage', 'database.sqlite') // Les données se trouve dans le dossier storage
+    storage: path.join(__dirname, '..', 'storage', 'database.sqlite') // Les données se trouvent dans le dossier storage
 });
 
 // Import du Schema de notre Model Game
 db['Games'] = sequelize.import('./Game');
 
 // Permet de sauvegarder dans notre objet db
-// Sequelize qui est le module et sequilize qui est notre instance connecté à notre BDD
+// Sequelize qui est le module et sequilize qui est notre instance connectée à notre BDD
 db.sequelize = sequelize;
 db.Sequilize = Sequelize;
 

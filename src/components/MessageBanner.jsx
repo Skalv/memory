@@ -7,7 +7,7 @@ import React from "react";
 
 function MessageBanner (props) {
     // Ce composant est appelé à chaque instant.
-    // Si la partie n'est pas terminé, on ne l'affiche pas.
+    // Si la partie n'est pas terminée, on ne l'affiche pas.
     if (!props.win && !props.timeover) {
         return null;
     }

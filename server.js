@@ -13,14 +13,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 // Chargement des routes de notre serveur.
-// Ces routes répondrons à l'adresse /api/games
+// Ces routes répondront à l'adresse /api/games
 const games = require('./routes/games');
 app.use('/api/games', games);
 
 // Définition des statics (css / js / images)
 app.use(express.static(path.join(__dirname, 'build')));
 
-// Sur l'adresse "/" on renvois l'index.html de notre dossier build
+// Sur l'adresse "/" on renvoie l'index.html de notre dossier build
 // ce qui correspond à notre application React.
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'))

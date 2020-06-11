@@ -15,7 +15,7 @@ class Welcome extends React.Component {
         }
     }
     /*
-    Pendant le montage du composant on appel notre serveur
+    Pendant le montage du composant on appelle notre serveur
     afin qu'il nous retourne les scores des précédentes parties.
      */
     async componentDidMount() {
@@ -28,7 +28,7 @@ class Welcome extends React.Component {
 
     /*
     Appelé lors du "submit" du formulaire cette fonction
-    valide et renvoi du pseudo au composant supérieur App.
+    valide et renvoie du pseudo au composant supérieur App.
      */
     handleSubmit(e) {
         e.preventDefault();
