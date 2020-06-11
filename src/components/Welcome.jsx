@@ -80,7 +80,7 @@ class Welcome extends React.Component {
                         />
                         <button type="submit">Jouer</button>
                     </form>
-                    <h2>Meilleur scores</h2>
+                    <h2>Top 10</h2>
                     <div className="history">
                         {historyList}
                     </div>
