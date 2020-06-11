@@ -57,9 +57,9 @@ class Welcome extends React.Component {
         if (this.state.games.length > 0) {
             historyList = (
                 <ul>
-                    {this.state.games.map((game) => {
+                    {this.state.games.map((game, index) => {
                         return (
-                            <li key={game.id}><b>{game.score}s</b> - {game.pseudo}</li>
+                            <li key={game.id}><b>{index + 1}. {game.pseudo}</b> - {game.score}s</li>
                         )
                     } )}
                 </ul>

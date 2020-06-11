@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Game.init({
         pseudo: DataTypes.STRING,
-        score: DataTypes.STRING
+        score: DataTypes.INTEGER
     }, { sequelize });
 
     Game.sync({force: true});

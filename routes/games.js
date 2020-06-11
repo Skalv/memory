@@ -8,7 +8,10 @@ const router = express.Router();
 // Route GET /api/games
 // On renvoie toutes les Games présentes en BDD
 router.get('/', function(req, res) {
-    models.Games.findAll()
+    models.Games.findAll({
+        order: models.sequelize.col('score'),
+        limit: 10
+    })
     .then((games) => {
         res.json(games)
     })
