@@ -1,11 +1,11 @@
-#Jeu du Memory 
+# Jeu du Memory 
 
 Ce jeu est développé avec [ReactJS](https://reactjs.org/) pour le front.<br/>
 [NodeJS et expressJS](https://expressjs.com/fr/) pour le back.<br/>
 Les données sont stockées par [Sqlite3](https://www.sqlite.org/index.html).<br/>
 Pour le déploiement, [Docker](https://www.docker.com/) est déjà configuré avec [docker-compose](https://docs.docker.com/compose/).
 
-##Déploiement sans Docker
+## Déploiement sans Docker
 [NodeJS (LTS)](https://nodejs.org/fr/) et [Yarn](https://yarnpkg.com/) sont requis.
 Dans le répertoire du jeu :
 
@@ -19,7 +19,7 @@ Build l'application pour la production.
 Démarre le serveur.
 Vous pouvez retrouver l'application à l'adresse http://localhost:8000
 
-##Déploiement avec Docker
+## Déploiement avec Docker
 [Docker](https://www.docker.com/) et [docker-compose](https://docs.docker.com/compose/) sont requis.
 
 Dans le répertoire du jeu :
